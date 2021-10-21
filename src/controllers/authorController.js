@@ -38,4 +38,4 @@ const updateAuthor = async (req, res) => {
   }
 }
 
-module.exports = { createNewAuthor };
+module.exports = { createNewAuthor, updateAuthor };
