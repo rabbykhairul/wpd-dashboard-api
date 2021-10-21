@@ -16,4 +16,23 @@ const getProjects = async (req, res) => {
   }
 };
 
-module.exports = { getProjects };
+const createNewProject = async (req, res) => {
+  try {
+    const newProject = new Projects(req.body);
+    await newProject.save();
+
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: "New project created successfully",
+      project: newProject,
+    })
+  } catch (err) {
+    console.log("Error while creating new project: ", err);
+    console.log("project payload: ", req.body);
+
+    return res.status(500).json({ success: false, statusCode: 500, message: "Internal server error. Please try again later"});
+  }
+}
+
+module.exports = { getProjects, createNewProject };
