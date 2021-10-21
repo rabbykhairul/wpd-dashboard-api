@@ -2,7 +2,9 @@ const Authors = require("../models/Authors");
 
 const createNewAuthor = async (req, res) => {
   try {
-    const newAuthor = new Authors(req.body);
+    const { joiningDate, ...otherInfo } = req.body;
+    const newAuthor = new Authors(otherInfo);
+    newAuthor.joiningDate = new Date(joiningDate);
     await newAuthor.save();
 
     return res.status(200).json({
