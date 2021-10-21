@@ -56,4 +56,19 @@ const deleteAuthor = async (req, res) => {
   }
 }
 
-module.exports = { createNewAuthor, updateAuthor, deleteAuthor };
+const getAuthors = async (req, res) => {
+  try {
+    const authors = await Authors.find({});
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      authors
+    })
+  } catch (err) {
+    console.log("Error while getting authors: ", err);
+
+    res.status(500).json({ success: false, statusCode: 500, message: "Internal server error. Please try again later"});
+  }
+}
+
+module.exports = { createNewAuthor, updateAuthor, deleteAuthor, getAuthors };
