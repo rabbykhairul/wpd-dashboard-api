@@ -38,4 +38,22 @@ const updateAuthor = async (req, res) => {
   }
 }
 
-module.exports = { createNewAuthor, updateAuthor };
+const deleteAuthor = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Authors.findOneAndDelete({ _id: id });
+
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: "Auther deleted successfully!"
+    })
+  } catch (err) {
+    console.log("Error while deleting author: ", err);
+    console.log("author id: ", req.params.id);
+
+    return res.status(500).json({ success: false, statusCode: 500, message: "Internal server error. Please try again later"});
+  }
+}
+
+module.exports = { createNewAuthor, updateAuthor, deleteAuthor };
