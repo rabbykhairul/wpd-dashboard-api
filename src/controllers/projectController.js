@@ -54,4 +54,22 @@ const updateProject = async (req, res) => {
   }
 }
 
+const deleteProject = async (req, res) => {
+  try {
+    const { id } = req.params.id;
+    await Projects.findOneAndDelete({ _id: id });
+
+    return res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: "Project deleted successfully",
+    })
+  } catch (err) {
+    console.log("Error while deleting project: ", err);
+    console.log("project id: ", req.params.id);
+
+    return res.status(500).json({ success: false, statusCode: 500, message: "Internal server error. Please try again later"});
+  }
+}
+
 module.exports = { getProjects, createNewProject, updateProject };
