@@ -10,4 +10,16 @@ const generateToken = (payload) => {
   return `Bearer ${token}`;
 }
 
-module.exports = { generateToken };
+const validateToken = (token) => {
+  try {
+    return jwt.verify(token, process.env.JWT_PRIVATE_KEY);
+  } catch (err) {
+    console.log("\n---");
+    console.log("error in token validation");
+    console.log("err: ", err);
+    console.log("---\n");
+    return null;
+  }
+};
+
+module.exports = { generateToken, validateToken };
