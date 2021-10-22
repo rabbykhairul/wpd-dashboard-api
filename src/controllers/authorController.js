@@ -31,8 +31,16 @@ const createNewAuthor = async (req, res) => {
 
 const updateAuthor = async (req, res) => {
   try {
-    const { id } = req.params;
-    const updatedAuthor = await Authors.findOneAndUpdate({ _id: id }, req.body, { new: true });
+    const { body, files, params } = req;
+    const { id } = params;
+
+    const uploadedFilePath = files ? await saveUploadedFile(files?.profilePic) : "";
+    const base64Image = uploadedFilePath? getBase64String(uploadedFilePath, files?.profilePic?.mimetype) : "";
+
+    const payload = { ...body };
+    if (base64Image) payload.profilePic = base64Image;
+
+    const updatedAuthor = await Authors.findOneAndUpdate({ _id: id }, payload, { new: true });
 
     return res.status(200).json({
       success: true,
