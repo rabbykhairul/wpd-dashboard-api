@@ -6,7 +6,8 @@ const authorSchema = mongoose.Schema({
   role: String,
   level: String,
   status: { type: String, default: "Offline" },
-  joiningDate: { type: Date, default: new Date() }
+  joiningDate: { type: Date, default: new Date() },
+  profilePic: String,
 }, { timestamps: true });
 
 module.exports = new mongoose.model("Authors", authorSchema);
