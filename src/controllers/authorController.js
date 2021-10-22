@@ -1,5 +1,5 @@
 const Authors = require("../models/Authors");
-const { saveUploadedFile } = require("../utils/fileMaster");
+const { saveUploadedFile, getBase64String } = require("../utils/fileMaster");
 
 const createNewAuthor = async (req, res) => {
   try {
@@ -10,6 +10,8 @@ const createNewAuthor = async (req, res) => {
     if (joiningDate) newAuthor.joiningDate = new Date(joiningDate);
 
     const uploadedFilePath = files ? await saveUploadedFile(files?.profilePic) : "";
+    const base64Image = uploadedFilePath? getBase64String(uploadedFilePath, files?.profilePic?.mimetype) : "";
+    newAuthor.profilePic = base64Image;
 
     await newAuthor.save();
 
