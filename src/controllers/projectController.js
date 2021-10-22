@@ -45,8 +45,16 @@ const createNewProject = async (req, res) => {
 
 const updateProject = async (req, res) => {
   try {
-    const { id } = req.params;
-    const updatedProject = await Projects.findOneAndUpdate({ _id: id }, req.body, { new: true });
+    const { body, files, params } = req;
+    const { id } = params;
+
+    const uploadedFilePath = files ? await saveUploadedFile(files?.projectLogo) : "";
+    const base64Image = uploadedFilePath? getBase64String(uploadedFilePath, files?.projectLogo?.mimetype) : "";
+
+    const payload = { ...body };
+    if (base64Image) payload.projectLogo = base64Image;
+
+    const updatedProject = await Projects.findOneAndUpdate({ _id: id }, payload, { new: true });
 
     return res.status(200).json({
       success: true,
