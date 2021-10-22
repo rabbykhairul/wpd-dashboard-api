@@ -1,4 +1,5 @@
 const Projects = require("../models/Projects");
+const { saveUploadedFile, getBase64String } = require("../utils/fileMaster");
 
 const getProjects = async (req, res) => {
   try {
@@ -18,7 +19,14 @@ const getProjects = async (req, res) => {
 
 const createNewProject = async (req, res) => {
   try {
-    const newProject = new Projects(req.body);
+    const { body, files } = req;
+
+    const newProject = new Projects(body);
+
+    const uploadedFilePath = files ? await saveUploadedFile(files?.projectLogo) : "";
+    const base64Image = uploadedFilePath? getBase64String(uploadedFilePath, files?.projectLogo?.mimetype) : "";
+    newProject.projectLogo = base64Image;
+
     await newProject.save();
 
     return res.status(200).json({
