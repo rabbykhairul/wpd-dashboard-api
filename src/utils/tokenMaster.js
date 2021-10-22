@@ -12,7 +12,7 @@ const generateToken = (payload) => {
 
 const validateToken = (token) => {
   try {
-    return jwt.verify(token, process.env.JWT_PRIVATE_KEY);
+    return jwt.verify(token, JWT_SECRET_KEY);
   } catch (err) {
     console.log("\n---");
     console.log("error in token validation");
