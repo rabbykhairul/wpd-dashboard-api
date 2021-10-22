@@ -1,10 +1,16 @@
 const Authors = require("../models/Authors");
+const { saveUploadedFile } = require("../utils/fileMaster");
 
 const createNewAuthor = async (req, res) => {
   try {
-    const { joiningDate, ...otherInfo } = req.body;
+    const { body, files } = req;
+
+    const { joiningDate, ...otherInfo } = body;
     const newAuthor = new Authors(otherInfo);
     if (joiningDate) newAuthor.joiningDate = new Date(joiningDate);
+
+    const uploadedFilePath = files ? await saveUploadedFile(files?.profilePic) : "";
+
     await newAuthor.save();
 
     return res.status(200).json({
