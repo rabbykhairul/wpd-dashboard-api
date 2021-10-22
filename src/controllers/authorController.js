@@ -4,7 +4,7 @@ const createNewAuthor = async (req, res) => {
   try {
     const { joiningDate, ...otherInfo } = req.body;
     const newAuthor = new Authors(otherInfo);
-    newAuthor.joiningDate = new Date(joiningDate);
+    if (joiningDate) newAuthor.joiningDate = new Date(joiningDate);
     await newAuthor.save();
 
     return res.status(200).json({
